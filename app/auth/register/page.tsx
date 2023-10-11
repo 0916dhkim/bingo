@@ -25,6 +25,7 @@ export default function Register() {
         name="email"
         type="email"
         placeholder="Email"
+        required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -32,6 +33,7 @@ export default function Register() {
         name="password"
         type="password"
         placeholder="Password"
+        required
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
