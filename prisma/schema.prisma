@@ -15,3 +15,8 @@ model User {
   email        String @unique
   passwordHash String
 }
+
+model Session {
+  id     String @id @default(cuid())
+  userId String
+}
