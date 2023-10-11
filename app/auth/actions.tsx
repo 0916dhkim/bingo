@@ -24,13 +24,13 @@ export async function register(state: string | null, data: FormData) {
 
   try {
     await prisma.$transaction(async (tx) => {
-      const user = await prisma.user.create({
+      const user = await tx.user.create({
         data: {
           email,
           passwordHash,
         },
       });
-      const session = await prisma.session.create({
+      const session = await tx.session.create({
         data: {
           userId: user.id,
         },
