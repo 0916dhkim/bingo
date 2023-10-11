@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { register } from "../actions";
 import Link from "next/link";
+// @ts-expect-error
+import { experimental_useFormState as useFormState } from "react-dom";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [formState, formAction] = useFormState(register, null);
 
   return (
-    <form action={register}>
+    <form action={formAction}>
       <ul>
         <li>
           <Link href="/">Home</Link>
@@ -33,6 +36,7 @@ export default function Register() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button>Register</button>
+      {formState && <p>{formState}</p>}
     </form>
   );
 }

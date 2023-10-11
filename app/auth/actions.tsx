@@ -9,47 +9,54 @@ import {
   setSessionCookie,
 } from "@/lib/cookie";
 
-export async function register(data: FormData) {
+export async function register(state: string | null, data: FormData) {
   const email = data.get("email");
   const password = data.get("password");
 
   if (typeof email !== "string") {
-    throw new Error("Invalid input: email should be a string.");
+    return "Invalid input: email should be a string.";
   }
   if (typeof password !== "string") {
-    throw new Error("Invalid input: password should be a string.");
+    return "Invalid input: password should be a string.";
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await prisma.$transaction(async (tx) => {
-    const user = await prisma.user.create({
-      data: {
-        email,
-        passwordHash,
-      },
+  try {
+    await prisma.$transaction(async (tx) => {
+      const user = await prisma.user.create({
+        data: {
+          email,
+          passwordHash,
+        },
+      });
+      const session = await prisma.session.create({
+        data: {
+          userId: user.id,
+        },
+      });
+      setSessionCookie(session.id);
     });
-    const session = await prisma.session.create({
-      data: {
-        userId: user.id,
-      },
-    });
-    setSessionCookie(session.id);
-  });
+  } catch (e) {
+    if (e instanceof Error && e.message.includes("Unique constraint")) {
+      return "The email already exists";
+    }
+    return "Failed to register.";
+  }
 
   revalidatePath("/");
   redirect("/");
 }
 
-export async function logIn(data: FormData) {
+export async function logIn(state: string | null, data: FormData) {
   const email = data.get("email");
   const password = data.get("password");
 
   if (typeof email !== "string") {
-    throw new Error("Invalid input: email should be a string.");
+    return "Invalid input: email should be a string.";
   }
   if (typeof password !== "string") {
-    throw new Error("Invalid input: password should be a string.");
+    return "Invalid input: password should be a string.";
   }
 
   const user = await prisma.user.findUnique({
@@ -57,12 +64,12 @@ export async function logIn(data: FormData) {
   });
 
   if (user == null) {
-    throw new Error("Email or password is incorrect.");
+    return "Email or password is incorrect.";
   }
 
   const passwordMatches = await bcrypt.compare(password, user.passwordHash);
   if (!passwordMatches) {
-    throw new Error("Email or password is incorrect.");
+    return "Email or password is incorrect.";
   }
 
   const session = await prisma.session.create({
