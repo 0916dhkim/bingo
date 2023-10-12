@@ -25,8 +25,10 @@ export default async function Home() {
   const availableGames = await prisma.game.findMany({
     where: {
       participants: {
-        none: {
-          id: user?.id,
+        every: {
+          NOT: {
+            id: user?.id,
+          },
         },
       },
     },
@@ -81,7 +83,7 @@ export default async function Home() {
             {availableGames.map((game) => (
               <li key={game.id}>
                 {game.name} ({game._count.participants})
-                <JoinGameButton gameId={game.id} />
+                {user && <JoinGameButton gameId={game.id} />}
               </li>
             ))}
           </ul>
