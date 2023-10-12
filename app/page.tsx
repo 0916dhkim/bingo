@@ -2,6 +2,7 @@ import { getSessionCookie } from "@/lib/cookie";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import LogOutButton from "./auth/LogOutButton";
+import JoinGameButton from "./game/JoinGameButton";
 
 export default async function Home() {
   const sessionId = getSessionCookie();
@@ -66,7 +67,9 @@ export default async function Home() {
           <h3>My Games</h3>
           <ul>
             {user.games.map((game) => (
-              <li key={game.id}>{game.name}</li>
+              <li key={game.id}>
+                <Link href={`/game/${game.id}`}>{game.name}</Link>
+              </li>
             ))}
           </ul>
         </>
@@ -76,7 +79,10 @@ export default async function Home() {
           <h3>Available Games</h3>
           <ul>
             {availableGames.map((game) => (
-              <li key={game.id}>{game.name}</li>
+              <li key={game.id}>
+                {game.name} ({game._count.participants})
+                <JoinGameButton gameId={game.id} />
+              </li>
             ))}
           </ul>
         </>
