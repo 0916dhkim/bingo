@@ -8,15 +8,9 @@ type JoinGameButtonProps = {
 };
 
 export default function JoinGameButton(props: JoinGameButtonProps) {
-  return (
-    <button
-      onClick={() =>
-        startTransition(() => {
-          joinGame(props.gameId);
-        })
-      }
-    >
-      Join
-    </button>
-  );
+  const handleClick = () =>
+    startTransition(() => {
+      joinGame(props.gameId).catch((e) => alert(e));
+    });
+  return <button onClick={handleClick}>Join</button>;
 }
