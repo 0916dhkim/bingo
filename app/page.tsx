@@ -9,8 +9,37 @@ export default async function Home() {
     ? await prisma.session.findUnique({ where: { id: sessionId } })
     : null;
   const user = session
-    ? await prisma.user.findUnique({ where: { id: session.userId } })
+    ? await prisma.user.findUnique({
+        where: { id: session.userId },
+        include: {
+          games: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      })
     : null;
+  const availableGames = await prisma.game.findMany({
+    where: {
+      participants: {
+        none: {
+          id: user?.id,
+        },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      _count: {
+        select: {
+          participants: true,
+        },
+      },
+    },
+  });
+
   return (
     <main>
       <ul>
@@ -32,6 +61,26 @@ export default async function Home() {
           </>
         )}
       </ul>
+      {user?.games?.length ? (
+        <>
+          <h3>My Games</h3>
+          <ul>
+            {user.games.map((game) => (
+              <li key={game.id}>{game.name}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      {availableGames.length ? (
+        <>
+          <h3>Available Games</h3>
+          <ul>
+            {availableGames.map((game) => (
+              <li key={game.id}>{game.name}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
     </main>
   );
 }
