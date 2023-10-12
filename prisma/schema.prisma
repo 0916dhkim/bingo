@@ -14,9 +14,46 @@ model User {
   id           String @id @default(cuid())
   email        String @unique
   passwordHash String
+  games        Game[]
+  daubs        Daub[]
 }
 
 model Session {
   id     String @id @default(cuid())
   userId String
+}
+
+model Game {
+  id           String @id @default(cuid())
+  name         String
+  cells        Cell[]
+  participants User[]
+}
+
+enum CellType {
+  BOOLEAN
+  TEXT
+  IMAGE
+}
+
+model Cell {
+  id          String   @id @default(cuid())
+  rowIndex    Int
+  columnIndex Int
+  description String
+  type        CellType @default(BOOLEAN)
+  gameId      String
+  game        Game     @relation(fields: [gameId], references: [id])
+  daubs       Daub[]
+}
+
+model Daub {
+  id        String   @id @default(cuid())
+  answer    String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  cellId    String
+  cell      Cell     @relation(fields: [cellId], references: [id])
 }
