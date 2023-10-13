@@ -1,27 +1,20 @@
-import { getSessionCookie } from "@/lib/cookie";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import LogOutButton from "./auth/LogOutButton";
 import JoinGameButton from "./game/JoinGameButton";
+import { getSession } from "@/lib/session";
 
 export default async function Home() {
-  const sessionId = getSessionCookie();
-  const session = sessionId
-    ? await prisma.session.findUnique({ where: { id: sessionId } })
-    : null;
-  const user = session
-    ? await prisma.user.findUnique({
-        where: { id: session.userId },
-        include: {
-          games: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
+  const user = await getSession();
+  const myGames = user
+    ? await prisma.game.findMany({
+        where: { participants: { some: { id: user.id } } },
+        select: {
+          id: true,
+          name: true,
         },
       })
-    : null;
+    : [];
   const availableGames = await prisma.game.findMany({
     where: {
       participants: {
@@ -64,11 +57,11 @@ export default async function Home() {
           </>
         )}
       </ul>
-      {user?.games?.length ? (
+      {myGames.length ? (
         <>
           <h3>My Games</h3>
           <ul>
-            {user.games.map((game) => (
+            {myGames.map((game) => (
               <li key={game.id}>
                 <Link href={`/game/${game.id}`}>{game.name}</Link>
               </li>

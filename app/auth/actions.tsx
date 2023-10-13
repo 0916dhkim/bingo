@@ -3,11 +3,7 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import {
-  destroySessionCookie,
-  getSessionCookie,
-  setSessionCookie,
-} from "@/lib/cookie";
+import { createSession, destroySession } from "@/lib/session";
 
 export async function register(state: string | null, data: FormData) {
   const email = data.get("email");
@@ -30,12 +26,7 @@ export async function register(state: string | null, data: FormData) {
           passwordHash,
         },
       });
-      const session = await tx.session.create({
-        data: {
-          userId: user.id,
-        },
-      });
-      setSessionCookie(session.id);
+      await createSession(user.id, tx);
     });
   } catch (e) {
     if (e instanceof Error && e.message.includes("Unique constraint")) {
@@ -72,26 +63,13 @@ export async function logIn(state: string | null, data: FormData) {
     return "Email or password is incorrect.";
   }
 
-  const session = await prisma.session.create({
-    data: {
-      userId: user.id,
-    },
-  });
-  setSessionCookie(session.id);
+  await createSession(user.id, prisma);
   revalidatePath("/");
   redirect("/");
 }
 
 export async function logOut() {
-  const sessionId = getSessionCookie();
-  if (sessionId != null) {
-    await prisma.session.delete({
-      where: {
-        id: sessionId,
-      },
-    });
-  }
-  destroySessionCookie();
+  await destroySession();
   revalidatePath("/");
   redirect("/");
 }

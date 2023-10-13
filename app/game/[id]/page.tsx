@@ -1,18 +1,10 @@
 import prisma from "@/lib/prisma";
 import styles from "./page.module.css";
 import { notFound } from "next/navigation";
-import { getSessionCookie } from "@/lib/cookie";
+import { getSession } from "@/lib/session";
 
 export default async function GamePage({ params }: { params: { id: string } }) {
-  const sessionId = getSessionCookie();
-  if (sessionId == null) {
-    return notFound();
-  }
-  const session = await prisma.session.findUnique({ where: { id: sessionId } });
-  if (session == null) {
-    return notFound();
-  }
-  const user = await prisma.user.findUnique({ where: { id: session.userId } });
+  const user = await getSession();
   if (user == null) {
     return notFound();
   }

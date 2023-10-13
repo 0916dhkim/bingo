@@ -1,20 +1,12 @@
 "use server";
 
-import { getSessionCookie } from "@/lib/cookie";
 import prisma from "@/lib/prisma";
+import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function joinGame(gameId: string) {
-  const sessionId = getSessionCookie();
-  if (sessionId == null) {
-    throw new Error("Unauthorized.");
-  }
-  const session = await prisma.session.findUnique({ where: { id: sessionId } });
-  if (session == null) {
-    throw new Error("Unauthorized.");
-  }
-  const user = await prisma.user.findUnique({ where: { id: session.userId } });
+  const user = await getSession();
   if (user == null) {
     throw new Error("Unauthorized.");
   }
