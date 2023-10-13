@@ -50,7 +50,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
               </div>
             ) : (
               <div key={index} className={styles.cell} />
-            )
+            ),
           )}
         </div>
       </div>
