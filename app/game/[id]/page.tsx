@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import { getSession } from "@/lib/session";
+import Link from "next/link";
 
 export default async function GamePage({ params }: { params: { id: string } }) {
   const user = await getSession();
@@ -34,6 +35,11 @@ export default async function GamePage({ params }: { params: { id: string } }) {
 
   return (
     <main>
+      <ul>
+        <li>
+          <Link href="/">Home</Link>
+        </li>
+      </ul>
       <h1>{game.name}</h1>
       <div className={styles.gridLayout}>
         <div className={styles.board}>
