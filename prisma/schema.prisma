@@ -45,6 +45,8 @@ model Cell {
   gameId      String
   game        Game     @relation(fields: [gameId], references: [id])
   daubs       Daub[]
+
+  @@unique([gameId, rowIndex, columnIndex])
 }
 
 model Daub {
@@ -56,4 +58,6 @@ model Daub {
   user      User     @relation(fields: [userId], references: [id])
   cellId    String
   cell      Cell     @relation(fields: [cellId], references: [id])
+
+  @@unique([userId, cellId])
 }
