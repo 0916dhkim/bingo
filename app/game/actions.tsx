@@ -36,7 +36,6 @@ export async function createGame() {
     });
     gameId = game.id;
   } catch (e) {
-    console.error(e);
     throw new Error("Failed to create new game.");
   }
 
