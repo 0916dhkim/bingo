@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id           String @id @default(cuid())
-  email        String @unique
-  passwordHash String
-  games        Game[]
-  daubs        Daub[]
+  id                 String @id @default(cuid())
+  email              String @unique
+  passwordHash       String
+  participatingGames Game[] @relation("Participant")
+  daubs              Daub[]
 }
 
 model Session {
@@ -27,7 +27,7 @@ model Game {
   id           String @id @default(cuid())
   name         String
   cells        Cell[]
-  participants User[]
+  participants User[] @relation("Participant")
 }
 
 enum CellType {
