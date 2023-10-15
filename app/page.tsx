@@ -79,7 +79,7 @@ export default async function Home() {
         </li>
         {hostingGames.map((game) => (
           <li key={game.id}>
-            <Link href={`/game/${game.id}`}>{game.name}</Link>
+            <Link href={`/game/${game.id}/edit`}>{game.name}</Link>
           </li>
         ))}
       </ul>

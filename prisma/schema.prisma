@@ -46,7 +46,7 @@ model Cell {
   description String
   type        CellType @default(BOOLEAN)
   gameId      String
-  game        Game     @relation(fields: [gameId], references: [id])
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
   daubs       Daub[]
 
   @@unique([gameId, rowIndex, columnIndex])
@@ -60,7 +60,7 @@ model Daub {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   cellId    String
-  cell      Cell     @relation(fields: [cellId], references: [id])
+  cell      Cell     @relation(fields: [cellId], references: [id], onDelete: Cascade)
 
   @@unique([userId, cellId])
 }
