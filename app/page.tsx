@@ -3,10 +3,20 @@ import Link from "next/link";
 import LogOutButton from "./auth/LogOutButton";
 import JoinGameButton from "./game/JoinGameButton";
 import { getSession } from "@/lib/session";
+import CreateGameButton from "./game/CreateGameButton";
 
 export default async function Home() {
   const user = await getSession();
-  const myGames = user
+  const hostingGames = user
+    ? await prisma.game.findMany({
+        where: { hostId: user.id },
+        select: {
+          id: true,
+          name: true,
+        },
+      })
+    : [];
+  const participatingGames = user
     ? await prisma.game.findMany({
         where: { participants: { some: { id: user.id } } },
         select: {
@@ -17,11 +27,16 @@ export default async function Home() {
     : [];
   const availableGames = await prisma.game.findMany({
     where: {
-      participants: {
-        every: {
-          NOT: {
-            id: user?.id,
+      AND: {
+        participants: {
+          every: {
+            NOT: {
+              id: user?.id,
+            },
           },
+        },
+        hostId: {
+          not: user?.id,
         },
       },
     },
@@ -57,11 +72,22 @@ export default async function Home() {
           </>
         )}
       </ul>
-      {myGames.length ? (
+      <h3>Hosting</h3>
+      <ul>
+        <li>
+          <CreateGameButton />
+        </li>
+        {hostingGames.map((game) => (
+          <li key={game.id}>
+            <Link href={`/game/${game.id}`}>{game.name}</Link>
+          </li>
+        ))}
+      </ul>
+      {participatingGames.length ? (
         <>
-          <h3>My Games</h3>
+          <h3>Participating Games</h3>
           <ul>
-            {myGames.map((game) => (
+            {participatingGames.map((game) => (
               <li key={game.id}>
                 <Link href={`/game/${game.id}`}>{game.name}</Link>
               </li>
