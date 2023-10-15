@@ -15,6 +15,7 @@ model User {
   email              String @unique
   passwordHash       String
   participatingGames Game[] @relation("Participant")
+  hostingGames       Game[] @relation("Host")
   daubs              Daub[]
 }
 
@@ -28,6 +29,8 @@ model Game {
   name         String
   cells        Cell[]
   participants User[] @relation("Participant")
+  hostId       String
+  host         User   @relation("Host", fields: [hostId], references: [id])
 }
 
 enum CellType {
