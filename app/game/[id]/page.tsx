@@ -28,11 +28,6 @@ export default async function GamePage({ params }: { params: { id: string } }) {
     return notFound();
   }
 
-  const cells: ((typeof game.cells)[number] | null)[] = Array(25).fill(null);
-  for (const cell of game.cells) {
-    cells[5 * cell.rowIndex + cell.columnIndex] = cell;
-  }
-
   return (
     <main>
       <ul>
@@ -43,15 +38,11 @@ export default async function GamePage({ params }: { params: { id: string } }) {
       <h1>{game.name}</h1>
       <div className={styles.gridLayout}>
         <div className={styles.board}>
-          {cells.map((cell, index) =>
-            cell ? (
-              <div key={cell.id} className={styles.cell}>
-                <span className={styles.description}>{cell.description}</span>
-              </div>
-            ) : (
-              <div key={index} className={styles.cell} />
-            ),
-          )}
+          {game.cells.map((cell) => (
+            <div key={cell.id} className={styles.cell}>
+              <span className={styles.description}>{cell.description}</span>
+            </div>
+          ))}
         </div>
       </div>
     </main>

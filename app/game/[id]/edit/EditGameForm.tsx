@@ -1,13 +1,14 @@
 "use client";
 
-import { Game } from "@prisma/client";
+import { Cell, Game } from "@prisma/client";
 import { startTransition, useState } from "react";
 import { deleteGame, editGame } from "../../actions";
 // @ts-expect-error
 import { experimental_useFormState as useFormState } from "react-dom";
+import CellInput from "./CellInput";
 
 type EditGameFormProps = {
-  currentGame: Game;
+  currentGame: Game & { cells: Cell[] };
 };
 
 export default function EditGameForm(props: EditGameFormProps) {
@@ -25,14 +26,18 @@ export default function EditGameForm(props: EditGameFormProps) {
 
   return (
     <form action={formAction}>
-      <h3>Name</h3>
       <input hidden readOnly name="id" value={props.currentGame.id} />
+      <h3>Name</h3>
       <input
         name="name"
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
+      <h3>Cells</h3>
+      {props.currentGame.cells.map((cell) => (
+        <CellInput key={cell.id} currentValue={cell} />
+      ))}
       <button>Save</button>
       <button onClick={handleDeleteGameClick}>Delete Game</button>
       {formState && <p>{formState}</p>}
