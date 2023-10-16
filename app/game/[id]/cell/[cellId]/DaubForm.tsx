@@ -27,6 +27,7 @@ export function DaubForm(props: DaubFormProps) {
         <p>{props.description}</p>
         <h3>(Optional) upload your image</h3>
         <input name="image" type="file" accept="image/*" />
+        <input name="cellId" hidden readOnly value={props.cellId} />
         <button>Submit</button>
         {formState && <p>{formState}</p>}
       </form>

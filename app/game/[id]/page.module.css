@@ -24,6 +24,9 @@
   align-items: center;
   text-align: center;
 
+  background: var(--background);
+  background-size: cover;
+
   padding: 0.5rem;
   border-right: 1px solid grey;
   border-bottom: 1px solid grey;

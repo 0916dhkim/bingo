@@ -47,5 +47,5 @@ export async function uploadImage(file: Blob) {
       Body: await normalizeImage(file),
     }),
   );
-  return key;
+  return `${process.env.S3_PUBLIC_URL}/${key}`;
 }

@@ -40,7 +40,17 @@ export default async function GamePage({ params }: { params: { id: string } }) {
       <div className={styles.gridLayout}>
         <div className={styles.board}>
           {game.cells.map((cell) => (
-            <div key={cell.id} className={styles.cell}>
+            <div
+              key={cell.id}
+              className={styles.cell}
+              style={{
+                "--background": cell.daubs[0]
+                  ? cell.daubs[0].imageUrl
+                    ? `url(${cell.daubs[0].imageUrl})`
+                    : "gold"
+                  : undefined,
+              }}
+            >
               <Link href={`${params.id}/cell/${cell.id}`}>
                 <span className={styles.description}>{cell.description}</span>
               </Link>
