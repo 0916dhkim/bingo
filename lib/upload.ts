@@ -28,7 +28,10 @@ function getS3Client() {
 
 async function normalizeImage(file: Blob) {
   const arrayBuffer = await file.arrayBuffer();
-  return await sharp(arrayBuffer).webp().toBuffer();
+  return await sharp(arrayBuffer)
+    .rotate() // autorotate to exif orientation
+    .webp() // convert to webp
+    .toBuffer();
 }
 
 export async function uploadImage(file: Blob) {
