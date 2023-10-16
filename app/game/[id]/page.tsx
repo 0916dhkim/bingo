@@ -40,7 +40,9 @@ export default async function GamePage({ params }: { params: { id: string } }) {
         <div className={styles.board}>
           {game.cells.map((cell) => (
             <div key={cell.id} className={styles.cell}>
-              <span className={styles.description}>{cell.description}</span>
+              <Link href={`${params.id}/cell/${cell.id}`}>
+                <span className={styles.description}>{cell.description}</span>
+              </Link>
             </div>
           ))}
         </div>
