@@ -26,12 +26,12 @@ function getS3Client() {
   });
 }
 
-async function normalizeImage(file: File) {
+async function normalizeImage(file: Blob) {
   const arrayBuffer = await file.arrayBuffer();
   return await sharp(arrayBuffer).webp().toBuffer();
 }
 
-export async function uploadImage(file: File) {
+export async function uploadImage(file: Blob) {
   const client = getS3Client();
 
   const key = `${randomUUID()}.webp`;

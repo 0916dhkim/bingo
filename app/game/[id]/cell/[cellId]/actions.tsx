@@ -4,7 +4,7 @@ import { uploadImage } from "@/lib/upload";
 
 export async function daubCell(state: string | null, data: FormData) {
   const image = data.get("image");
-  if (!(image == null || image instanceof File)) {
+  if (!(image == null || image instanceof Blob)) {
     return "Invalid input: image should be a file.";
   }
   if (image) {
