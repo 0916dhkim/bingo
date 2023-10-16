@@ -40,6 +40,7 @@ export async function uploadImage(file: Blob) {
       Key: key,
       Bucket: process.env.S3_BUCKET,
       ACL: "public-read",
+      ContentType: "image/webp",
       Body: await normalizeImage(file),
     }),
   );
