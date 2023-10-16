@@ -14,6 +14,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
     where: { id: params.id },
     include: {
       cells: {
+        orderBy: [{ rowIndex: "asc" }, { columnIndex: "asc" }],
         include: {
           daubs: {
             where: {

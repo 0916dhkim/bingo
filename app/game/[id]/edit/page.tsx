@@ -15,7 +15,11 @@ export default async function EditGamePage({
   }
   const game = await prisma.game.findUnique({
     where: { id: params.id, hostId: user.id },
-    include: { cells: true },
+    include: {
+      cells: {
+        orderBy: [{ rowIndex: "asc" }, { columnIndex: "asc" }],
+      },
+    },
   });
   if (game == null) {
     return notFound();
