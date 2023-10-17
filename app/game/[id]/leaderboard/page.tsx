@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { getSession } from "@/lib/session";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -8,11 +7,6 @@ export default async function LeaderboardPage({
 }: {
   params: { id: string };
 }) {
-  const user = await getSession();
-  if (user == null) {
-    return notFound();
-  }
-
   const game = await prisma.game.findUnique({
     where: { id: params.id },
     select: {
