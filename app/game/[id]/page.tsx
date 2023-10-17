@@ -51,7 +51,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
                 {
                   "--background": cell.daubs[0]
                     ? cell.daubs[0].imageUrl
-                      ? `url(${cell.daubs[0].imageUrl})`
+                      ? `url(${cell.daubs[0].imageUrl}) grey`
                       : "gold"
                     : undefined,
                 } as Record<string, unknown>
