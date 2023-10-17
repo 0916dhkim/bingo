@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import { getSession } from "@/lib/session";
 import Link from "next/link";
+import { boardStatus, calculateScore } from "@/lib/score";
 
 export default async function GamePage({ params }: { params: { id: string } }) {
   const user = await getSession();
@@ -29,6 +30,8 @@ export default async function GamePage({ params }: { params: { id: string } }) {
     return notFound();
   }
 
+  const score = calculateScore(boardStatus(game.cells));
+
   return (
     <main>
       <ul>
@@ -37,6 +40,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
         </li>
       </ul>
       <h1>{game.name}</h1>
+      <p>Your score: {score}</p>
       <div className={styles.gridLayout}>
         <div className={styles.board}>
           {game.cells.map((cell) => (
