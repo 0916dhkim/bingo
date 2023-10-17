@@ -18,7 +18,7 @@ export default async function Home() {
     : [];
   const participatingGames = user
     ? await prisma.game.findMany({
-        where: { participants: { some: { id: user.id } } },
+        where: { participations: { some: { userId: user.id } } },
         select: {
           id: true,
           name: true,
@@ -28,10 +28,10 @@ export default async function Home() {
   const availableGames = await prisma.game.findMany({
     where: {
       AND: {
-        participants: {
+        participations: {
           every: {
             NOT: {
-              id: user?.id,
+              userId: user?.id,
             },
           },
         },
@@ -45,7 +45,7 @@ export default async function Home() {
       name: true,
       _count: {
         select: {
-          participants: true,
+          participations: true,
         },
       },
     },
@@ -101,7 +101,7 @@ export default async function Home() {
           <ul>
             {availableGames.map((game) => (
               <li key={game.id}>
-                {game.name} ({game._count.participants})
+                {game.name} ({game._count.participations})
                 {user && <JoinGameButton gameId={game.id} />}
               </li>
             ))}

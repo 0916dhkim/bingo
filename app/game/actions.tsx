@@ -55,9 +55,9 @@ export async function joinGame(gameId: string) {
         id: user.id,
       },
       data: {
-        participatingGames: {
-          connect: {
-            id: gameId,
+        participations: {
+          create: {
+            gameId,
           },
         },
       },
