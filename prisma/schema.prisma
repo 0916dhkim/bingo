@@ -31,6 +31,8 @@ model Participation {
   user   User   @relation(fields: [userId], references: [id])
   gameId String
   game   Game   @relation(fields: [gameId], references: [id])
+
+  @@unique([userId, gameId])
 }
 
 model Game {

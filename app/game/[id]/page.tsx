@@ -3,7 +3,6 @@ import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import { getSession } from "@/lib/session";
 import Link from "next/link";
-import { boardStatus, calculateScore } from "@/lib/score";
 
 export default async function GamePage({ params }: { params: { id: string } }) {
   const user = await getSession();
@@ -14,6 +13,10 @@ export default async function GamePage({ params }: { params: { id: string } }) {
   const game = await prisma.game.findUnique({
     where: { id: params.id },
     include: {
+      participations: {
+        where: { gameId: params.id, userId: user.id },
+        select: { score: true },
+      },
       cells: {
         orderBy: [{ rowIndex: "asc" }, { columnIndex: "asc" }],
         include: {
@@ -30,17 +33,18 @@ export default async function GamePage({ params }: { params: { id: string } }) {
     return notFound();
   }
 
-  const score = calculateScore(boardStatus(game.cells));
-
   return (
     <main>
       <ul>
         <li>
           <Link href="/">Home</Link>
         </li>
+        <li>
+          <Link href={`${game.id}/leaderboard`}>Leaderboard</Link>
+        </li>
       </ul>
       <h1>{game.name}</h1>
-      <p>Your score: {score}</p>
+      <p>Your score: {game.participations[0].score}</p>
       <div className={styles.gridLayout}>
         <div className={styles.board}>
           {game.cells.map((cell) => (

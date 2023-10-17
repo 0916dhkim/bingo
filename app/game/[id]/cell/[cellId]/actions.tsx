@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { boardStatus, calculateScore } from "@/lib/score";
 import { getSession } from "@/lib/session";
 import { uploadImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
@@ -47,24 +48,60 @@ export async function daubCell(state: string | null, data: FormData) {
     }
   }
   try {
-    await prisma.daub.upsert({
-      where: { userId_cellId: { userId: user.id, cellId } },
-      create: {
-        imageUrl,
-        cell: {
-          connect: {
-            id: cellId,
+    await prisma.$transaction(async (tx) => {
+      await tx.daub.upsert({
+        where: { userId_cellId: { userId: user.id, cellId } },
+        create: {
+          imageUrl,
+          cell: {
+            connect: {
+              id: cellId,
+            },
+          },
+          user: {
+            connect: {
+              id: user.id,
+            },
           },
         },
-        user: {
-          connect: {
-            id: user.id,
+        update: {
+          imageUrl,
+        },
+      });
+      const cellAfterUpsert = await tx.cell.findUnique({
+        where: { id: cellId },
+        select: {
+          game: {
+            select: {
+              id: true,
+              cells: {
+                select: {
+                  rowIndex: true,
+                  columnIndex: true,
+                  daubs: {
+                    where: { userId: user.id },
+                  },
+                },
+              },
+            },
           },
         },
-      },
-      update: {
-        imageUrl,
-      },
+      });
+      if (cellAfterUpsert == null) {
+        throw new Error(
+          "Cell should never be null if the upsert was successful.",
+        );
+      }
+      const score = calculateScore(boardStatus(cellAfterUpsert.game.cells));
+      await tx.participation.update({
+        where: {
+          userId_gameId: {
+            userId: user.id,
+            gameId: cellAfterUpsert.game.id,
+          },
+        },
+        data: { score },
+      });
     });
   } catch {
     return "Failed to daub the cell.";
