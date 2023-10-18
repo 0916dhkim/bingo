@@ -37,7 +37,8 @@ export default async function LeaderboardPage({
       <ol>
         {game.participations.map((participation) => (
           <li key={participation.id}>
-            {participation.user.email} | {participation.score} points
+            {participation.user.email} | {participation.score} points (
+            <Link href={`./participation/${participation.id}`}>view</Link>)
           </li>
         ))}
       </ol>
