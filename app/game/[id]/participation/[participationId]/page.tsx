@@ -65,9 +65,7 @@ export default async function ParticipationPage({
                 } as Record<string, unknown>
               }
             >
-              <Link href={`${params.id}/cell/${cell.id}`}>
-                <span className={styles.description}>{cell.description}</span>
-              </Link>
+              <span className={styles.description}>{cell.description}</span>
             </div>
           ))}
         </div>
