@@ -52,19 +52,14 @@ export default async function GamePage({ params }: { params: { id: string } }) {
           cells={game.cells.map((cell) => (
             <BingoCell
               key={cell.id}
-              background={
-                cell.daubs[0]
-                  ? cell.daubs[0].imageUrl
-                    ? `url(${cell.daubs[0].imageUrl}) grey`
-                    : "gold"
-                  : undefined
-              }
+              daubed={!!cell.daubs[0]}
+              backgroundImageUrl={cell.daubs[0]?.imageUrl}
             >
               <Link
                 href={`${params.id}/cell/${cell.id}`}
                 className={styles.cell}
               >
-                {cell.description}
+                <span className={styles.description}>{cell.description}</span>
               </Link>
             </BingoCell>
           ))}

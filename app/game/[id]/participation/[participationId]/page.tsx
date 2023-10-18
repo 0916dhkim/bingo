@@ -56,15 +56,10 @@ export default async function ParticipationPage({
           cells={game.cells.map((cell) => (
             <BingoCell
               key={cell.id}
-              background={
-                cell.daubs[0]
-                  ? cell.daubs[0].imageUrl
-                    ? `url(${cell.daubs[0].imageUrl}) grey`
-                    : "gold"
-                  : undefined
-              }
+              daubed={!!cell.daubs[0]}
+              backgroundImageUrl={cell.daubs[0]?.imageUrl}
             >
-              {cell.description}
+              <span className={styles.description}>{cell.description}</span>
             </BingoCell>
           ))}
         />

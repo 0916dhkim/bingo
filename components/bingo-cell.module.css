@@ -4,6 +4,7 @@
 
   background: var(--background);
   background-size: cover;
+  color: var(--text-color);
 
   overflow: auto;
 

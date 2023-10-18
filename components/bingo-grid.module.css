@@ -7,13 +7,21 @@
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 1fr);
 
-  border-top: 1px solid grey;
-  border-left: 1px solid grey;
+  border-top: 3px solid oklch(25% 0 0);
+  border-left: 3px solid oklch(25% 0 0);
 }
 
 .cell {
-  border-right: 1px solid grey;
-  border-bottom: 1px solid grey;
+  border-right: 1px solid oklch(70% 0 0);
+  border-bottom: 1px solid oklch(70% 0 0);
   min-height: 0;
   min-width: 0;
+}
+
+.cell:nth-child(5n) {
+  border-right: 3px solid oklch(25% 0 0);
+}
+
+.cell:nth-child(n+21) {
+  border-bottom: 3px solid oklch(25% 0 0);
 }
