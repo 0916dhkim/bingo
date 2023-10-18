@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import styles from "./page.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BingoGrid } from "@/components/bingo-grid";
+import { BingoCell } from "@/components/bingo-cell";
 
 export default async function ParticipationPage({
   params,
@@ -50,25 +52,22 @@ export default async function ParticipationPage({
       <h1>{game.name}</h1>
       <p>Score: {game.participations[0].score}</p>
       <div className={styles.gridLayout}>
-        <div className={styles.board}>
-          {game.cells.map((cell) => (
-            <div
+        <BingoGrid
+          cells={game.cells.map((cell) => (
+            <BingoCell
               key={cell.id}
-              className={styles.cell}
-              style={
-                {
-                  "--background": cell.daubs[0]
-                    ? cell.daubs[0].imageUrl
-                      ? `url(${cell.daubs[0].imageUrl}) grey`
-                      : "gold"
-                    : undefined,
-                } as Record<string, unknown>
+              background={
+                cell.daubs[0]
+                  ? cell.daubs[0].imageUrl
+                    ? `url(${cell.daubs[0].imageUrl}) grey`
+                    : "gold"
+                  : undefined
               }
             >
-              <span className={styles.description}>{cell.description}</span>
-            </div>
+              {cell.description}
+            </BingoCell>
           ))}
-        </div>
+        />
       </div>
     </main>
   );

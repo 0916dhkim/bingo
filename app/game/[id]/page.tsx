@@ -3,6 +3,8 @@ import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import { getSession } from "@/lib/session";
 import Link from "next/link";
+import { BingoGrid } from "@/components/bingo-grid";
+import { BingoCell } from "@/components/bingo-cell";
 
 export default async function GamePage({ params }: { params: { id: string } }) {
   const user = await getSession();
@@ -46,27 +48,27 @@ export default async function GamePage({ params }: { params: { id: string } }) {
       <h1>{game.name}</h1>
       <p>Your score: {game.participations[0].score}</p>
       <div className={styles.gridLayout}>
-        <div className={styles.board}>
-          {game.cells.map((cell) => (
-            <div
+        <BingoGrid
+          cells={game.cells.map((cell) => (
+            <BingoCell
               key={cell.id}
-              className={styles.cell}
-              style={
-                {
-                  "--background": cell.daubs[0]
-                    ? cell.daubs[0].imageUrl
-                      ? `url(${cell.daubs[0].imageUrl}) grey`
-                      : "gold"
-                    : undefined,
-                } as Record<string, unknown>
+              background={
+                cell.daubs[0]
+                  ? cell.daubs[0].imageUrl
+                    ? `url(${cell.daubs[0].imageUrl}) grey`
+                    : "gold"
+                  : undefined
               }
             >
-              <Link href={`${params.id}/cell/${cell.id}`}>
-                <span className={styles.description}>{cell.description}</span>
+              <Link
+                href={`${params.id}/cell/${cell.id}`}
+                className={styles.cell}
+              >
+                {cell.description}
               </Link>
-            </div>
+            </BingoCell>
           ))}
-        </div>
+        />
       </div>
     </main>
   );

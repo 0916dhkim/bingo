@@ -1,0 +1,19 @@
+.board {
+  width: 100%;
+  max-width: 45rem;
+  aspect-ratio: 1 / 1;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+}
+
+.cell {
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  min-height: 0;
+  min-width: 0;
+}
