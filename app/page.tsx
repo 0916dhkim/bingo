@@ -4,39 +4,41 @@ import LogOutButton from "./auth/LogOutButton";
 import JoinGameButton from "./game/JoinGameButton";
 import { getSession } from "@/lib/session";
 import CreateGameButton from "./game/CreateGameButton";
+import { Landing } from "./landing";
 
 export default async function Home() {
   const user = await getSession();
-  const hostingGames = user
-    ? await prisma.game.findMany({
-        where: { hostId: user.id },
-        select: {
-          id: true,
-          name: true,
-        },
-      })
-    : [];
-  const participatingGames = user
-    ? await prisma.game.findMany({
-        where: { participations: { some: { userId: user.id } } },
-        select: {
-          id: true,
-          name: true,
-        },
-      })
-    : [];
+
+  if (user == null) {
+    return <Landing />;
+  }
+
+  const hostingGames = await prisma.game.findMany({
+    where: { hostId: user.id },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+  const participatingGames = await prisma.game.findMany({
+    where: { participations: { some: { userId: user.id } } },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
   const availableGames = await prisma.game.findMany({
     where: {
       AND: {
         participations: {
           every: {
             NOT: {
-              userId: user?.id,
+              userId: user.id,
             },
           },
         },
         hostId: {
-          not: user?.id,
+          not: user.id,
         },
       },
     },
@@ -54,23 +56,10 @@ export default async function Home() {
   return (
     <main>
       <ul>
-        {user ? (
-          <>
-            <li>hi {user ? user.email : null}</li>
-            <li>
-              <LogOutButton />
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <Link href="/auth/register">Register</Link>
-            </li>
-            <li>
-              <Link href="/auth/login">Login</Link>
-            </li>
-          </>
-        )}
+        <li>hi {user.email}</li>
+        <li>
+          <LogOutButton />
+        </li>
       </ul>
       <h3>Hosting</h3>
       <ul>
@@ -102,7 +91,7 @@ export default async function Home() {
             {availableGames.map((game) => (
               <li key={game.id}>
                 {game.name} ({game._count.participations})
-                {user && <JoinGameButton gameId={game.id} />}
+                <JoinGameButton gameId={game.id} />
               </li>
             ))}
           </ul>
