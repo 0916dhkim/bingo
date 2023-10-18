@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import styles from "./page.module.css";
 
 export default async function LeaderboardPage({
   params,
@@ -36,9 +37,14 @@ export default async function LeaderboardPage({
       <h3>Leaderboard: {game.name}</h3>
       <ol>
         {game.participations.map((participation) => (
-          <li key={participation.id}>
-            {participation.user.email} | {participation.score} points (
-            <Link href={`./participation/${participation.id}`}>view</Link>)
+          <li key={participation.id} className={styles.listItem}>
+            {participation.user.email} | {participation.score} points
+            <Link
+              href={`./participation/${participation.id}`}
+              className={styles.viewLink}
+            >
+              view
+            </Link>
           </li>
         ))}
       </ol>
