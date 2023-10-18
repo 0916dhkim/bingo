@@ -1,0 +1,46 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 3rem;
+}
+
+.character {
+  font-weight: bold;
+  font-size: xx-large;
+
+  @media screen and (max-width: 30rem) {
+    font-size: medium;
+  }
+}
+
+.authContainer {
+  width: 100%;
+  max-width: 45rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.authLink {
+  border: 1px solid oklch(50% 0 0);
+  border-radius: 0.50rem;
+  padding: 0.75rem;
+
+  font-size: x-large;
+
+  @media screen and (max-width: 30rem) {
+    border-radius: 0.25rem;
+    font-size: medium;
+  }
+}
+
+.authLink.register {
+  border: none;
+  background: var(--primary-color);
+  color: var(--primary-text);
+}

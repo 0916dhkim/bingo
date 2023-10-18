@@ -11,7 +11,7 @@ export function BingoCell(props: BingoCellProps) {
     "--background": props.backgroundImageUrl
       ? `url(${props.backgroundImageUrl}) grey`
       : props.daubed
-      ? "oklch(53.83% 0.262 261.16)"
+      ? "var(--primary-color)"
       : undefined,
     "--text-color": props.daubed ? "white" : "black",
   };
