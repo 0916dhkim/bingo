@@ -16,19 +16,19 @@ export function Landing() {
             <span className={styles.character}>📷</span>
           </BingoCell>,
           <BingoCell key={6} daubed={false}>
-            <span className={styles.character}>P</span>
-          </BingoCell>,
-          <BingoCell key={7} daubed={false}>
-            <span className={styles.character}>H</span>
-          </BingoCell>,
-          <BingoCell key={8} daubed={false}>
-            <span className={styles.character}>O</span>
-          </BingoCell>,
-          <BingoCell key={9} daubed>
             <span className={styles.character}>T</span>
           </BingoCell>,
+          <BingoCell key={7} daubed={false}>
+            <span className={styles.character}>R</span>
+          </BingoCell>,
+          <BingoCell key={8} daubed={false}>
+            <span className={styles.character}>A</span>
+          </BingoCell>,
+          <BingoCell key={9} daubed>
+            <span className={styles.character}>I</span>
+          </BingoCell>,
           <BingoCell key={10} daubed={false}>
-            <span className={styles.character}>O</span>
+            <span className={styles.character}>L</span>
           </BingoCell>,
           <BingoCell key={11} daubed={false}>
             <span className={styles.character}>B</span>
