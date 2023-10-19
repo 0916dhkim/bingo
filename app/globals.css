@@ -1,9 +1,25 @@
 :root {
+  --default-text: oklch(25% 0 0);
+  --default-background: white;
+  --alter-background: oklch(99% 0 0);
   --primary-color: oklch(53.83% 0.262 261.16);
   --primary-text: white;
 }
 
-a {
+h1, h2, h3, h4, h5, h6,
+span, a, p {
+  margin: 0;
+  padding: 0;
   color: unset;
   text-decoration: none;
+}
+
+html, body {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+
+  color: var(--default-text);
 }
