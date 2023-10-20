@@ -87,3 +87,7 @@
   border: none;
   border-bottom: 1px solid var(--default-background);
 }
+
+.action:last-child {
+  border-bottom: none;
+}
