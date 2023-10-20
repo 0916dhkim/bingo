@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
@@ -25,29 +26,35 @@ export default async function LeaderboardPage({
   }
 
   return (
-    <main>
-      <ul>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="./">Back to game</Link>
-        </li>
-      </ul>
-      <h3>Leaderboard: {game.name}</h3>
-      <ol>
-        {game.participations.map((participation) => (
-          <li key={participation.id} className={styles.listItem}>
-            {participation.user.email} | {participation.score} points
-            <Link
-              href={`./participation/${participation.id}`}
-              className={styles.viewLink}
-            >
-              view
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </main>
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <nav className={styles.nav}>
+          <ul>
+            <li>
+              <Link href="./" className={styles.back} replace>
+                <ChevronLeftIcon />
+                Game
+              </Link>
+            </li>
+            <li>{game.name}</li>
+          </ul>
+        </nav>
+        <main className={styles.content}>
+          <p className={styles.sectionHeader}>Leaderboard</p>
+          <div className={styles.section}>
+            {game.participations.map((participation) => (
+              <Link
+                key={participation.id}
+                href={`./participation/${participation.id}`}
+                className={styles.sectionRow}
+              >
+                {participation.user.email} | {participation.score} points
+                <ChevronRightIcon />
+              </Link>
+            ))}
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }
