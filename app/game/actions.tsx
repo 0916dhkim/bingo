@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 
 export async function createGame() {
   const user = await getSession();
@@ -40,7 +40,7 @@ export async function createGame() {
   }
 
   revalidatePath("/");
-  redirect(`/game/${gameId}/edit`);
+  redirect(`/game/${gameId}/edit`, RedirectType.replace);
 }
 
 export async function joinGame(gameId: string) {
@@ -157,7 +157,7 @@ export async function editGame(state: string | null, data: FormData) {
   }
 
   revalidatePath("/");
-  redirect("/");
+  redirect("/", RedirectType.replace);
 }
 
 export async function deleteGame(gameId: string) {
@@ -183,5 +183,5 @@ export async function deleteGame(gameId: string) {
   }
 
   revalidatePath("/");
-  redirect("/");
+  redirect("/", RedirectType.replace);
 }

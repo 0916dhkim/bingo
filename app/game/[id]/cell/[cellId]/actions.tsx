@@ -5,7 +5,7 @@ import { boardStatus, calculateScore } from "@/lib/score";
 import { getSession } from "@/lib/session";
 import { uploadImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 
 type DaubCellInput = {
   cellId: string;
@@ -108,5 +108,5 @@ export async function daubCell(state: string | null, data: FormData) {
   }
 
   revalidatePath("/game");
-  redirect("..");
+  redirect("..", RedirectType.replace);
 }

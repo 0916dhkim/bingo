@@ -2,7 +2,7 @@
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 import { createSession, destroySession } from "@/lib/session";
 
 export async function register(state: string | null, data: FormData) {
@@ -36,7 +36,7 @@ export async function register(state: string | null, data: FormData) {
   }
 
   revalidatePath("/");
-  redirect("/");
+  redirect("/", RedirectType.replace);
 }
 
 export async function logIn(state: string | null, data: FormData) {
@@ -65,11 +65,11 @@ export async function logIn(state: string | null, data: FormData) {
 
   await createSession(user.id, prisma);
   revalidatePath("/");
-  redirect("/");
+  redirect("/", RedirectType.replace);
 }
 
 export async function logOut() {
   await destroySession();
   revalidatePath("/");
-  redirect("/");
+  redirect("/", RedirectType.replace);
 }
