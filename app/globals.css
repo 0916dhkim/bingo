@@ -1,7 +1,7 @@
 :root {
   --default-text: oklch(25% 0 0);
   --default-background: white;
-  --alter-background: oklch(99% 0 0);
+  --alter-background: oklch(97% 0 0);
   --primary-color: oklch(53.83% 0.262 261.16);
   --primary-text: white;
   --shadow-color: oklch(0% 0 0 / 0.1);
