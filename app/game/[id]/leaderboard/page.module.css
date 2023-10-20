@@ -63,6 +63,15 @@
   border-bottom: 1px solid var(--default-background);
 }
 
+.sectionRow:hover, .sectionRow:focus {
+  background-color: var(--primary-color);
+  color: var(--primary-text);
+}
+
+.sectionRow:last-child {
+  border-bottom: none;
+}
+
 .back {
   display: flex;
   flex-direction: row;
