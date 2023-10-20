@@ -1,10 +1,12 @@
 import prisma from "@/lib/prisma";
+import styles from "./page.module.css";
 import Link from "next/link";
-import LogOutButton from "./auth/LogOutButton";
-import JoinGameButton from "./game/JoinGameButton";
+import LogOutButton from "./auth/log-out-button";
+import JoinGameButton from "./game/join-game-button";
 import { getSession } from "@/lib/session";
-import CreateGameButton from "./game/CreateGameButton";
+import CreateGameButton from "./game/create-game-button";
 import { Landing } from "./landing";
+import { ChevronRightIcon } from "lucide-react";
 
 export default async function Home() {
   const user = await getSession();
@@ -54,49 +56,75 @@ export default async function Home() {
   });
 
   return (
-    <main>
-      <ul>
-        <li>hi {user.email}</li>
-        <li>
-          <LogOutButton />
-        </li>
-      </ul>
-      <h3>Hosting</h3>
-      <ul>
-        <li>
-          <CreateGameButton />
-        </li>
-        {hostingGames.map((game) => (
-          <li key={game.id}>
-            <Link href={`/game/${game.id}/edit`}>{game.name}</Link>
-          </li>
-        ))}
-      </ul>
-      {participatingGames.length ? (
-        <>
-          <h3>Participating Games</h3>
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <nav className={styles.nav}>
           <ul>
-            {participatingGames.map((game) => (
-              <li key={game.id}>
-                <Link href={`/game/${game.id}`}>{game.name}</Link>
-              </li>
-            ))}
+            <li />
+            <li>Trail Bingo</li>
+            <li />
           </ul>
-        </>
-      ) : null}
-      {availableGames.length ? (
-        <>
-          <h3>Available Games</h3>
-          <ul>
-            {availableGames.map((game) => (
-              <li key={game.id}>
-                {game.name} ({game._count.participations})
-                <JoinGameButton gameId={game.id} />
-              </li>
+        </nav>
+        <main className={styles.content}>
+          <p className={styles.sectionHeader}>Games I Made</p>
+          <div className={styles.section}>
+            {hostingGames.map((game) => (
+              <Link
+                key={game.id}
+                className={styles.sectionRow}
+                href={`/game/${game.id}/edit`}
+              >
+                {game.name} <ChevronRightIcon />
+              </Link>
             ))}
-          </ul>
-        </>
-      ) : null}
-    </main>
+            <CreateGameButton className={styles.action}>
+              Create Game
+            </CreateGameButton>
+          </div>
+          {participatingGames.length ? (
+            <>
+              <p className={styles.sectionHeader}>Games I Am In</p>
+              <div className={styles.section}>
+                {participatingGames.map((game) => (
+                  <Link
+                    key={game.id}
+                    className={styles.sectionRow}
+                    href={`/game/${game.id}`}
+                  >
+                    {game.name} <ChevronRightIcon />
+                  </Link>
+                ))}
+              </div>
+            </>
+          ) : null}
+          {availableGames.length ? (
+            <>
+              <p className={styles.sectionHeader}>Join a Game</p>
+              <div className={styles.section}>
+                {availableGames.map((game) => (
+                  <JoinGameButton
+                    key={game.id}
+                    gameId={game.id}
+                    className={styles.sectionRow}
+                  >
+                    {game.name} ({game._count.participations})
+                    <ChevronRightIcon />
+                  </JoinGameButton>
+                ))}
+              </div>
+            </>
+          ) : null}
+
+          <p className={styles.sectionHeader}>Account</p>
+          <div className={styles.section}>
+            <div className={styles.sectionRow}>
+              <span>Email</span>
+              <span>{user.email}</span>
+            </div>
+            <LogOutButton className={styles.action}>Log Out</LogOutButton>
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }

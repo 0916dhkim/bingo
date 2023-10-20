@@ -3,7 +3,12 @@
 import { startTransition } from "react";
 import { logOut } from "./actions";
 
-export default function LogOutButton() {
+type LogOutButtonProps = {
+  className: string;
+  children?: React.ReactNode;
+};
+
+export default function LogOutButton(props: LogOutButtonProps) {
   return (
     <button
       onClick={() =>
@@ -11,8 +16,9 @@ export default function LogOutButton() {
           logOut();
         })
       }
+      className={props.className}
     >
-      Log out
+      {props.children}
     </button>
   );
 }

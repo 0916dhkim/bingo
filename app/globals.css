@@ -29,3 +29,8 @@ html, body {
 
   color: var(--default-text);
 }
+
+button {
+  font-family: unset;
+  color: unset;
+}

@@ -5,6 +5,8 @@ import { joinGame } from "./actions";
 
 type JoinGameButtonProps = {
   gameId: string;
+  className: string;
+  children?: React.ReactNode;
 };
 
 export default function JoinGameButton(props: JoinGameButtonProps) {
@@ -12,5 +14,10 @@ export default function JoinGameButton(props: JoinGameButtonProps) {
     startTransition(() => {
       joinGame(props.gameId).catch((e) => alert(e));
     });
-  return <button onClick={handleClick}>Join</button>;
+
+  return (
+    <button onClick={handleClick} className={props.className}>
+      {props.children}
+    </button>
+  );
 }
