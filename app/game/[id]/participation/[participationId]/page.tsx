@@ -54,7 +54,7 @@ export default async function ParticipationPage({
           <ul>
             <li>
               <Link href={`../leaderboard`} className={styles.back} replace>
-                <ChevronLeftIcon />
+                <ChevronLeftIcon size={32} />
                 Leaderboard
               </Link>
             </li>

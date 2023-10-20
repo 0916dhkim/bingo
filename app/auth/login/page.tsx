@@ -20,7 +20,7 @@ export default function LogIn() {
           <ul>
             <li>
               <Link href="/" className={styles.back} replace>
-                <ChevronLeftIcon />
+                <ChevronLeftIcon size={32} />
                 Back
               </Link>
             </li>

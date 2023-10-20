@@ -32,7 +32,7 @@ export default async function LeaderboardPage({
           <ul>
             <li>
               <Link href="./" className={styles.back} replace>
-                <ChevronLeftIcon />
+                <ChevronLeftIcon size={32} />
                 Game
               </Link>
             </li>
