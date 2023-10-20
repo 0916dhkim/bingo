@@ -36,6 +36,21 @@
   padding: 0 1rem;
 }
 
+.imagePreviewContainer {
+  width: 200px;
+  height: 200px;
+  border-radius: 2rem;
+  overflow: hidden;
+
+  box-shadow: var(--box-shadow);
+}
+
+.imagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .lowerGroup {
   justify-self: stretch;
   display: flex;

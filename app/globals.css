@@ -4,6 +4,12 @@
   --alter-background: oklch(99% 0 0);
   --primary-color: oklch(53.83% 0.262 261.16);
   --primary-text: white;
+  --shadow-color: oklch(0% 0 0 / 0.1);
+  --box-shadow: 0 1px 1px var(--shadow-color),
+    0 2px 2px var(--shadow-color),
+    0 4px 4px var(--shadow-color),
+    0 8px 8px var(--shadow-color),
+    0 16px 16px var(--shadow-color);
 }
 
 h1, h2, h3, h4, h5, h6,
