@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { ChevronLeftIcon } from "lucide-react";
 import styles from "./page.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,6 +13,13 @@ export default async function ParticipationPage({
 }) {
   const participation = await prisma.participation.findUnique({
     where: { id: params.participationId },
+    include: {
+      user: {
+        select: {
+          email: true,
+        },
+      },
+    },
   });
   if (participation == null) {
     return notFound();
@@ -40,30 +48,39 @@ export default async function ParticipationPage({
   }
 
   return (
-    <main>
-      <ul>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href={`../leaderboard`}>Leaderboard</Link>
-        </li>
-      </ul>
-      <h1>{game.name}</h1>
-      <p>Score: {game.participations[0].score}</p>
-      <div className={styles.gridLayout}>
-        <BingoGrid
-          cells={game.cells.map((cell) => (
-            <BingoCell
-              key={cell.id}
-              daubed={!!cell.daubs[0]}
-              backgroundImageUrl={cell.daubs[0]?.imageUrl}
-            >
-              <span className={styles.description}>{cell.description}</span>
-            </BingoCell>
-          ))}
-        />
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <nav className={styles.nav}>
+          <ul>
+            <li>
+              <Link href={`../leaderboard`} className={styles.back} replace>
+                <ChevronLeftIcon />
+                Leaderboard
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        <main className={styles.content}>
+          <div className={styles.section}>
+            <div className={styles.sectionRow}>{participation.user.email}</div>
+            <div className={styles.sectionRow}>
+              <span>Score</span>
+              <span>{game.participations[0].score}</span>
+            </div>
+          </div>
+          <BingoGrid
+            cells={game.cells.map((cell) => (
+              <BingoCell
+                key={cell.id}
+                daubed={!!cell.daubs[0]}
+                backgroundImageUrl={cell.daubs[0]?.imageUrl}
+              >
+                <span className={styles.description}>{cell.description}</span>
+              </BingoCell>
+            ))}
+          />
+        </main>
       </div>
-    </main>
+    </div>
   );
 }
