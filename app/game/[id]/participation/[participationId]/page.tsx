@@ -81,6 +81,16 @@ export default async function ParticipationPage({
               </BingoCell>
             ))}
           />
+          <p className={styles.plug}>
+            Enjoying the app? Please leave a tip for{" "}
+            <Link
+              className={styles.link}
+              href="https://opencollective.com/torontojs/donate?interval=oneTime&amount=5&name=&legalName=&email="
+            >
+              TorontoJS
+            </Link>
+            !
+          </p>
         </main>
       </div>
     </div>
