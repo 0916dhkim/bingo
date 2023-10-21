@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BingoGrid } from "@/components/bingo-grid";
 import { BingoCell } from "@/components/bingo-cell";
+import ShareButton from "./share-button";
 
 export default async function ParticipationPage({
   params,
@@ -67,6 +68,7 @@ export default async function ParticipationPage({
               <span>Score</span>
               <span>{game.participations[0].score}</span>
             </div>
+            <ShareButton className={styles.action}>Share</ShareButton>
           </div>
           <BingoGrid
             cells={game.cells.map((cell) => (

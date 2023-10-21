@@ -80,3 +80,23 @@
 .sectionRow:last-child {
   border-bottom: none;
 }
+
+.action {
+  background-color: var(--alter-background);
+  color: var(--primary-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.5rem 1rem;
+  font-size: medium;
+
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--default-background);
+}
+
+.action:last-child {
+  border-bottom: none;
+}
