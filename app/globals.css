@@ -34,3 +34,7 @@ button {
   font-family: unset;
   color: unset;
 }
+
+input {
+  font-size: 1rem;
+}
