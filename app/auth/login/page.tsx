@@ -5,8 +5,7 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import { logIn } from "../actions";
 import Link from "next/link";
-// @ts-expect-error
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 
 export default function LogIn() {
   const [email, setEmail] = useState("");

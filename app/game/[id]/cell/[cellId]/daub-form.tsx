@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { daubCell } from "./actions";
 import styles from "./daub-form.module.css";
 import { CameraIcon } from "lucide-react";
-// @ts-expect-error
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 
 type DaubFormProps = {
   cellId: string;

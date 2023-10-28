@@ -3,9 +3,8 @@
 import { Cell, Game } from "@prisma/client";
 import { startTransition, useState } from "react";
 import { deleteGame, editGame } from "../../actions";
-// @ts-expect-error
-import { experimental_useFormState as useFormState } from "react-dom";
 import CellInput from "./CellInput";
+import { useFormState } from "react-dom";
 
 type EditGameFormProps = {
   currentGame: Game & { cells: Cell[] };
